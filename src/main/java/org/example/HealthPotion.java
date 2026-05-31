@@ -5,8 +5,4 @@ public class HealthPotion extends Item{
     public HealthPotion(int value){
         this.value=value;
     }
-    @Override
-    public void Use(Player player){
-        Player.addHealthPoints(value);
-    }
 }

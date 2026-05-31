@@ -13,16 +13,16 @@ public abstract class Character {
     public void Move(){}
     public void Attack(){}
 
-    public static int getHitPoints() {
+    public  int getHitPoints() {
         return hitPoints;
     }
-    public static void setHitPoints(int value){
+    public void setHitPoints(int value){
         this.hitPoints=value;
     }
-    public static int getAttackDamage() {
+    public  int getAttackDamage() {
         return attackDamage;
     }
-    public static void setAttackDamage(int attackDamage) {
+    public  void setAttackDamage(int attackDamage) {
         this.attackDamage = attackDamage;
     }
 
