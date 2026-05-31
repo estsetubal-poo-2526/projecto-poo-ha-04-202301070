@@ -19,4 +19,23 @@ public class Player extends Character {
     public void addAttackDamage(int value) {
         setAttackDamage(getAttackDamage() + value);
     }
+
+    public void addItem(Item item) {
+        inventory.add(item);
+    }
+
+    public List<Item> getInventory() {
+        return Collections.unmodifiableList(inventory);
+    }
+
+    public void useItem(int index) {
+        if (index >= 0 && index < inventory.size()) {
+            Item item = inventory.remove(index);
+            item.use(this);
+        }
+    }
+
+    public String getSymbol() {
+        return "P";
+    }
 }
