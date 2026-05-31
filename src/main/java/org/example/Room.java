@@ -6,14 +6,30 @@ import java.util.List;
 public class Room {
     private final List<Character> characters;
     private final List<RoomItem> items;
+    private final List<Enemy> enemies;
 
     public Room() {
         characters = new ArrayList<>();
         items = new ArrayList<>();
+        enemies = new ArrayList<>();
     }
 
     public void addCharacter(Character character) {
         characters.add(character);
+    }
+
+    public void addEnemy(Enemy enemy) {
+        enemies.add(enemy);
+    }
+
+
+    public Enemy getEnemyAt(int x, int y) {
+        for (Enemy enemy : enemies) {
+            if (enemy.getX() == x && enemy.getY() == y) {
+                return enemy;
+            }
+        }
+        return null;
     }
 
     public void addItem(Item item, int x, int y) {

@@ -74,6 +74,10 @@ public class Main extends Application {
         root.requestFocus();
     }
 
+    public static void main(String[] args) {
+        launch(args);
+    }
+
     private void move(int dx, int dy) {
         game.movePlayer(dx, dy);
         updateView();
@@ -91,6 +95,7 @@ public class Main extends Application {
                 "Vida: " + player.getHitPoints()
                         + " | Dano: " + player.getAttackDamage()
                         + " | Posicao: (" + player.getX() + ", " + player.getY() + ")"
+                        + " | Sala: (" + game.getCurrentRoomX() + ", " + game.getCurrentRoomY() + ")"
         );
         messageLabel.setText(game.getMessage());
     }
@@ -123,6 +128,11 @@ public class Main extends Application {
             return roomItem.getItem().getSymbol();
         }
 
+        Enemy enemy = game.getCurrentRoom().getEnemyAt(x, y);
+        if (enemy != null) {
+            return enemy.getSymbol();
+        }
+
         return "";
     }
 
@@ -133,6 +143,10 @@ public class Main extends Application {
 
         if (game.getCurrentRoom().getItemAt(x, y) != null) {
             return "-fx-background-color: #7d6608; -fx-border-color: #f4d03f; -fx-border-width: 1;";
+        }
+
+        if (game.getCurrentRoom().getEnemyAt(x, y) != null) {
+            return "-fx-background-color: #641e16; -fx-border-color: #e74c3c; -fx-border-width: 1;";
         }
 
         return "-fx-background-color: #111111; -fx-border-color: #444444; -fx-border-width: 1;";
