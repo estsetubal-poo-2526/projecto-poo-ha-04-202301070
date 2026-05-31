@@ -1,6 +1,7 @@
 package org.example;
 
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -16,6 +17,7 @@ import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
 public class Main extends Application {
+    private Stage stage;
     private Game game;
     private GridPane board;
     private Label statusLabel;
@@ -24,11 +26,31 @@ public class Main extends Application {
 
     @Override
     public void start(Stage stage) {
+        this.stage = stage;
+        stage.setTitle("Dungeon Escape");
+        showStartScreen();
+        stage.show();
+    }
+
+    private void showStartScreen() {
+        Label titleLabel = createTitleLabel("Dungeon Escape");
+
+        Button playButton = createMenuButton("Play");
+        playButton.setOnAction(event -> showGameScreen());
+
+        Button quitButton = createMenuButton("Quit");
+        quitButton.setOnAction(event -> Platform.exit());
+
+        VBox menu = new VBox(18, titleLabel, playButton, quitButton);
+        menu.setAlignment(Pos.CENTER);
+
+        stage.setScene(createScene(menu));
+    }
+
+    private void showGameScreen() {
         game = new Game();
 
-        Label titleLabel = new Label("Dungeon Escape");
-        titleLabel.setTextFill(Color.WHITE);
-        titleLabel.setFont(Font.font("Consolas", 42));
+        Label titleLabel = createTitleLabel("Dungeon Escape");
 
         statusLabel = new Label();
         statusLabel.setTextFill(Color.WHITE);
@@ -49,11 +71,7 @@ public class Main extends Application {
         VBox content = new VBox(16, titleLabel, statusLabel, messageLabel, board, inventoryBox);
         content.setAlignment(Pos.CENTER);
 
-        StackPane root = new StackPane(content);
-        root.setPadding(new Insets(24));
-        root.setStyle("-fx-background-color: black;");
-
-        Scene scene = new Scene(root, 720, 560);
+        Scene scene = createScene(content);
         scene.setOnKeyPressed(event -> {
             if (event.getCode() == KeyCode.UP || event.getCode() == KeyCode.W) {
                 move(0, -1);
@@ -66,27 +84,66 @@ public class Main extends Application {
             }
         });
 
-        stage.setTitle("Dungeon Escape");
         stage.setScene(scene);
-        stage.show();
-
         updateView();
-        root.requestFocus();
+        content.requestFocus();
     }
 
-    public static void main(String[] args) {
-        launch(args);
+    private void showEndScreen() {
+        String resultText = game.isVictory() ? "Vitoria" : "Perdeste";
+
+        Label resultLabel = createTitleLabel(resultText);
+
+        Button restartButton = createMenuButton("Reiniciar");
+        restartButton.setOnAction(event -> showGameScreen());
+
+        Button quitButton = createMenuButton("Quit");
+        quitButton.setOnAction(event -> Platform.exit());
+
+        VBox endContent = new VBox(18, resultLabel, restartButton, quitButton);
+        endContent.setAlignment(Pos.CENTER);
+
+        stage.setScene(createScene(endContent));
+    }
+
+    private Scene createScene(VBox content) {
+        StackPane root = new StackPane(content);
+        root.setPadding(new Insets(24));
+        root.setStyle("-fx-background-color: black;");
+        return new Scene(root, 720, 560);
+    }
+
+    private Label createTitleLabel(String text) {
+        Label titleLabel = new Label(text);
+        titleLabel.setTextFill(Color.WHITE);
+        titleLabel.setFont(Font.font("Consolas", 42));
+        return titleLabel;
+    }
+
+    private Button createMenuButton(String text) {
+        Button button = new Button(text);
+        button.setMinWidth(160);
+        button.setFocusTraversable(false);
+        button.setStyle("-fx-background-color: #f4d03f; -fx-text-fill: black; -fx-font-weight: bold;");
+        return button;
     }
 
     private void move(int dx, int dy) {
         game.movePlayer(dx, dy);
         updateView();
+        showEndScreenIfNeeded();
     }
 
     private void updateView() {
         updateStatus();
         updateBoard();
         updateInventory();
+    }
+
+    private void showEndScreenIfNeeded() {
+        if (game.isFinished()) {
+            showEndScreen();
+        }
     }
 
     private void updateStatus() {
@@ -178,14 +235,13 @@ public class Main extends Application {
 
         for (int i = 0; i < game.getPlayer().getInventory().size(); i++) {
             Item item = game.getPlayer().getInventory().get(i);
-            Button itemButton = new Button("Usar " + item.getName());
-            itemButton.setFocusTraversable(false);
-            itemButton.setStyle("-fx-background-color: #f4d03f; -fx-text-fill: black; -fx-font-weight: bold;");
+            Button itemButton = createMenuButton("Usar " + item.getName());
 
             int itemIndex = i;
             itemButton.setOnAction(event -> {
                 game.useItem(itemIndex);
                 updateView();
+                showEndScreenIfNeeded();
             });
 
             inventoryBox.getChildren().add(itemButton);

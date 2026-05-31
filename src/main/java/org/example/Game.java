@@ -17,6 +17,7 @@ public class Game {
     private int currentRoomX;
     private int currentRoomY;
     private boolean finished;
+    private boolean victory;
     private String message;
 
     public Game() {
@@ -52,6 +53,10 @@ public class Game {
         return finished;
     }
 
+    public boolean isVictory() {
+        return victory;
+    }
+
     public boolean isBossRoom() {
         return currentRoomX == BOSS_ROOM_X && currentRoomY == BOSS_ROOM_Y;
     }
@@ -80,6 +85,7 @@ public class Game {
         if (isExitTile(nextX, nextY) && player.isKeyUsed()) {
             player.setPosition(nextX, nextY);
             finished = true;
+            victory = true;
             message = "Fim do jogo.";
             return;
         }
