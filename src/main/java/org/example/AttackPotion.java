@@ -5,5 +5,9 @@ public class AttackPotion extends Item{
     public AttackPotion(int value) {
         this.value = value;
     }
+    @Override
+    public void Use(Player player){
+        player.addAttackDamage(value);
+    }
 }
 

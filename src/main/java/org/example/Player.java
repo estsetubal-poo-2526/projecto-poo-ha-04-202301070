@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Player extends Character{
-    List inventory;
+    List<Item> inventory;
     public Player(int hitPoints,int attackDamage,int x, int y){
         super(hitPoints,attackDamage,x,y);
         inventory=new ArrayList<>();
@@ -15,7 +15,13 @@ public class Player extends Character{
     public void addAttackDamage(int value){
         setAttackDamage(getAttackDamage()+value);
     }
-    public void UseItem(Item item){
+    public void UseItem(int index){
+        if(index>=0 && index<inventory.size()){
+            inventory.get(index).Use(this);
+        }
+        inventory.remove(index);
+    }
+    public void Move(){
 
     }
 }
