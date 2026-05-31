@@ -9,4 +9,7 @@ public class Enemy extends Character{
         return "E";
     }
 
+    public int getMovementSteps() {
+        return 1;
+    }
 }

@@ -6,6 +6,7 @@ import java.util.List;
 
 public class Player extends Character {
     private final List<Item> inventory;
+    private boolean keyUsed;
 
     public Player(int hitPoints, int attackDamage, int x, int y) {
         super(hitPoints, attackDamage, x, y);
@@ -33,6 +34,14 @@ public class Player extends Character {
             Item item = inventory.remove(index);
             item.use(this);
         }
+    }
+
+    public void useKey() {
+        keyUsed = true;
+    }
+
+    public boolean isKeyUsed() {
+        return keyUsed;
     }
 
     public String getSymbol() {

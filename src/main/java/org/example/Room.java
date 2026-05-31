@@ -22,14 +22,21 @@ public class Room {
         enemies.add(enemy);
     }
 
+    public List<Enemy> getEnemies() {
+        return enemies;
+    }
 
     public Enemy getEnemyAt(int x, int y) {
         for (Enemy enemy : enemies) {
-            if (enemy.getX() == x && enemy.getY() == y) {
+            if (enemy.isAlive() && enemy.getX() == x && enemy.getY() == y) {
                 return enemy;
             }
         }
         return null;
+    }
+
+    public void removeEnemy(Enemy enemy) {
+        enemies.remove(enemy);
     }
 
     public void addItem(Item item, int x, int y) {

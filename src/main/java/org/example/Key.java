@@ -7,7 +7,7 @@ public class Key extends Item {
 
     @Override
     public void use(Player player) {
-        // A chave sera usada numa fase futura para abrir a saida.
+        player.useKey();
     }
 
     @Override

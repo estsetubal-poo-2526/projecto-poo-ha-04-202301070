@@ -96,6 +96,7 @@ public class Main extends Application {
                         + " | Dano: " + player.getAttackDamage()
                         + " | Posicao: (" + player.getX() + ", " + player.getY() + ")"
                         + " | Sala: (" + game.getCurrentRoomX() + ", " + game.getCurrentRoomY() + ")"
+                        + " | Chave: " + (player.isKeyUsed() ? "Usada" : "Nao usada")
         );
         messageLabel.setText(game.getMessage());
     }
@@ -133,6 +134,10 @@ public class Main extends Application {
             return enemy.getSymbol();
         }
 
+        if (game.isExitTile(x, y)) {
+            return game.isExitUnlocked() ? "S" : "X";
+        }
+
         return "";
     }
 
@@ -147,6 +152,14 @@ public class Main extends Application {
 
         if (game.getCurrentRoom().getEnemyAt(x, y) != null) {
             return "-fx-background-color: #641e16; -fx-border-color: #e74c3c; -fx-border-width: 1;";
+        }
+
+        if (game.isExitTile(x, y)) {
+            if (game.isExitUnlocked()) {
+                return "-fx-background-color: #196f3d; -fx-border-color: #2ecc71; -fx-border-width: 1;";
+            }
+
+            return "-fx-background-color: #424949; -fx-border-color: #95a5a6; -fx-border-width: 1;";
         }
 
         return "-fx-background-color: #111111; -fx-border-color: #444444; -fx-border-width: 1;";

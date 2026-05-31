@@ -10,4 +10,8 @@ public class FastEnemy extends Enemy{
         return "F";
     }
 
+    @Override
+    public int getMovementSteps() {
+        return 2;
+    }
 }
